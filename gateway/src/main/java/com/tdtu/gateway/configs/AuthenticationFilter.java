@@ -2,7 +2,7 @@ package com.tdtu.gateway.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdtu.gateway.dto.ResDTO;
-import com.tdtu.gateway.service.JwtUtils;
+import com.tdtu.gateway.utils.JwtUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.stereotype.Component;

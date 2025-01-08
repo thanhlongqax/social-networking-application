@@ -1,4 +1,4 @@
-package com.tdtu.gateway.service;
+package com.tdtu.gateway.utils;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

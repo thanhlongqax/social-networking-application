@@ -4,6 +4,7 @@ import com.tdtu.file_service.enums.EFileUploadStatus;
 import com.tdtu.file_service.enums.EUploadFolder;
 import com.tdtu.file_service.service.IFileService;
 import com.cloudinary.Cloudinary;
+import com.tdtu.file_service.service.IFileValidation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -16,7 +17,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class FileService implements IFileService {
-    private final FileValidation filesValidation;
+    private final IFileValidation filesValidation;
     private final Cloudinary cloudinary;
     @Override
     public String uploadFile(MultipartFile multipartFile, EUploadFolder folder) throws IOException {

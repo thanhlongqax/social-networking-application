@@ -1,7 +1,7 @@
 package com.tdtu.user_services.exception;
 
 
-import com.tdtu.user_services.dto.respone.ResDTO;
+import com.tdtu.user_services.dto.ResDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

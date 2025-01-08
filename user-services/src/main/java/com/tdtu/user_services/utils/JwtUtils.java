@@ -1,6 +1,6 @@
 package com.tdtu.user_services.utils;
 
-import com.tdtu.user_services.dto.respone.ResDTO;
+import com.tdtu.user_services.dto.ResDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -61,7 +61,7 @@ public class JwtUtils {
 
     public static ResDTO<Object> generateInvalidTokenResp(){
         ResDTO<Object> response = new ResDTO<>();
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setCode(HttpServletResponse.SC_UNAUTHORIZED);
         response.setData(null);
         response.setMessage("You are not authenticated");
 

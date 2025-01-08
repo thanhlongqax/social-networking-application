@@ -1,4 +1,4 @@
-package com.tdtu.user_services.dto.respone;
+package com.tdtu.user_services.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ResDTO<D> {
-    private int status;
+    private int code;
     private String message;
     private D data;
 

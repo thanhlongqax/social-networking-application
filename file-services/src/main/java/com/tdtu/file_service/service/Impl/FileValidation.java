@@ -1,14 +1,15 @@
 package com.tdtu.file_service.service.Impl;
 
 import com.tdtu.file_service.enums.EFileUploadStatus;
-import org.springframework.stereotype.Component;
+import com.tdtu.file_service.service.IFileValidation;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 import java.util.Set;
 
-@Component
-public class FileValidation {
+@Service
+public class FileValidation implements IFileValidation {
     private static final Set<String> VALID_EXTENSIONS = Set.of(
             "png", "jpg", "jpeg", "gif",
             "webm", "vob", "flv",

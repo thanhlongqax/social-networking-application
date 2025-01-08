@@ -1,6 +1,6 @@
 package com.tdtu.user_services.exception;
 
-import com.tdtu.user_services.dto.respone.ResDTO;
+import com.tdtu.user_services.dto.ResDTO;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

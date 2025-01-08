@@ -1,12 +1,11 @@
 package com.tdtu.auth_services.service;
 
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.tdtu.auth_services.dto.request.SignupRequest;
+import com.tdtu.auth_services.dto.respone.SignUpRespone;
+import com.tdtu.auth_services.model.User;
 import org.springframework.stereotype.Service;
 
-@Service
-@Slf4j
-@RequiredArgsConstructor
-public class UserService {
+public interface UserService {
+    public User getUserInfo(String email);
+    public SignUpRespone saveUser(SignupRequest user);
 }
