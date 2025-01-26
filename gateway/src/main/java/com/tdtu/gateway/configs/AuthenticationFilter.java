@@ -3,6 +3,7 @@ package com.tdtu.gateway.configs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdtu.gateway.dto.ResDTO;
 import com.tdtu.gateway.utils.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationFilter implements GatewayFilter {
     private final RouterValidation validator;
     private final JwtUtils jwtUtils;
@@ -24,15 +26,18 @@ public class AuthenticationFilter implements GatewayFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
-
         if(validator.isSecured.test(request)){
+            log.info("Is request secured: {}", validator.isSecured.test(request));
+
             if(authMissing(request)){
+                log.error("Authorization header is missing.");
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
 
             final String token = request.getHeaders().getOrEmpty("Authorization").get(0);
 
             if(!jwtUtils.validateJwtToken(token)){
+                log.error("JWT token is invalid.");
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
 

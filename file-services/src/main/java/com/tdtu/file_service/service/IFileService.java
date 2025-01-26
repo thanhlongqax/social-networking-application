@@ -1,7 +1,6 @@
 package com.tdtu.file_service.service;
 
 import com.tdtu.file_service.enums.EUploadFolder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

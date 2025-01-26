@@ -1,5 +1,6 @@
 package com.tdtu.user_services.dto.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,18 @@ import java.time.LocalDateTime;
 public class SaveUserReqDTO {
     private String email;
     private String password;
+    private String username;
+    private String phoneNumber;
+    @Nullable
     private String firstName;
+    @Nullable
     private String lastName;
+    @Nullable
     private String middleName;
+    @Nullable
     private String gender;
+    @Nullable
     private String profilePicture;
+    @Nullable
     private String bio;
 }

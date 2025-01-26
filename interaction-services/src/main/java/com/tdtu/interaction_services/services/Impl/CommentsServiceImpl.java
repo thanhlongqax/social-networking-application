@@ -12,8 +12,6 @@ import com.tdtu.interaction_services.models.User;
 import com.tdtu.interaction_services.repositories.CommentsRepository;
 import com.tdtu.interaction_services.producer.SendKafkaMsgService;
 import com.tdtu.interaction_services.services.CommentService;
-import com.tdtu.interaction_services.services.PostService;
-import com.tdtu.interaction_services.services.UserService;
 import com.tdtu.interaction_services.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

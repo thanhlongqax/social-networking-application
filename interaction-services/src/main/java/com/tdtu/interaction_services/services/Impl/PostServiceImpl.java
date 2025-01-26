@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
 
     public Post findById(String token, String postId){
         String getUserInfoUrl = UriComponentsBuilder
-                .fromHttpUrl(postServiceHost + "api/v1/posts/" + postId)
+                .fromHttpUrl(postServiceHost + "api/posts/" + postId)
                 .toUriString();
 
         log.info(getUserInfoUrl);

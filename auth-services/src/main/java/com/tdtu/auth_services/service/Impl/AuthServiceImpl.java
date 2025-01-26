@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
         try{
             log.info("Password: " + password);
-            log.info("Username: " + email);
+            log.info("email: " + email);
             Authentication authentication = authenticationProvider.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
                 responseDto.setData(
                         SigninRespone.builder()
                                 .id(foundUser.getId())
-                                .username(foundUser.getEmail())
+                                .username(foundUser.getUsername())
                                 .token(jwtUtils.generateJwtToken(foundUser.getId()))
                                 .tokenType("Bearer")
                                 .userFullName(foundUser.getUserFullName())

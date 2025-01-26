@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 public class RouterValidation {
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     public static final List<String> permitEndpoints = List.of(
+            "/eureka",
             "/api/auth/**",
             "/api/search/**",
             "/api/file/**"

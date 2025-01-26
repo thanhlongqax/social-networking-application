@@ -3,6 +3,7 @@ package com.tdtu.user_services.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tdtu.user_services.enums.EUserRole;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,15 +24,25 @@ public class User {
     private String email;
     @JsonIgnore
     private String hashPassword;
+    @Nullable
     private String firstName;
+    @Nullable
     private String lastName;
+    @Nullable
+    private String username;
+    @Nullable
     private String middleName;
     @JsonIgnore
     private String normalizedName;
+    @Nullable
     private String gender;
+    @Nullable
     private String profilePicture;
+    @Nullable
     private String cover;
+    @Nullable
     private String bio;
+    private String phoneNumber;
     private String notificationKey;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime createdAt;
@@ -44,6 +56,12 @@ public class User {
     @OneToMany(mappedBy = "toUser")
     @JsonIgnore
     private List<FriendRequest> myRequests;
+
+    @Transient
+    private Long followerCount;
+
+    @Transient
+    private Long followingCount;
     public String getUserFullName(){
         return String.join(" ", this.getFirstName(), this.getMiddleName(), this.getLastName());
     }

@@ -36,7 +36,7 @@ public class InteractionService {
 
     public List<Comment> findCommentsByPostId(String token , String postId){
         String getCommentsUrl = UriComponentsBuilder
-                .fromHttpUrl(interactionService + "/api/v1/comments")
+                .fromHttpUrl(interactionService + "/api/comments")
                 .queryParam("postId", postId)
                 .toUriString();
 
@@ -63,7 +63,7 @@ public class InteractionService {
 
     public Map<EReactionType, List<Reacts>> findReactionsByPostId(String token, String postId){
         String getReactsUrl = UriComponentsBuilder
-                .fromHttpUrl(interactionService + "/api/v1/reacts")
+                .fromHttpUrl(interactionService + "/api/reacts")
                 .queryParam("postId", postId)
                 .toUriString();
 

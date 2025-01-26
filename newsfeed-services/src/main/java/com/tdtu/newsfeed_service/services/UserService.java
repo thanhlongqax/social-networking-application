@@ -31,7 +31,7 @@ public class UserService {
 
     public User findById(String userId){
         String getUserInfoUrl = UriComponentsBuilder
-                .fromHttpUrl(userServiceHost + "api/v1/users/" + userId)
+                .fromHttpUrl(userServiceHost + "api/users/" + userId)
                 .toUriString();
 
         log.info(getUserInfoUrl);
@@ -53,7 +53,7 @@ public class UserService {
 
     public List<User> findByIds(List<String> ids){
         String getUserInfoUrl = UriComponentsBuilder
-                .fromHttpUrl(userServiceHost + "api/v1/users/by-ids")
+                .fromHttpUrl(userServiceHost + "api/users/by-ids")
                 .toUriString();
 
         log.info(getUserInfoUrl);
@@ -78,7 +78,7 @@ public class UserService {
 
     public List<User> findUserFriendIdsByUserToken(String token) {
         String getUserFriendsUrl = UriComponentsBuilder
-                .fromHttpUrl(userServiceHost + "api/v1/users/friends")
+                .fromHttpUrl(userServiceHost + "api/users/friends")
                 .toUriString();
 
         log.info(getUserFriendsUrl);

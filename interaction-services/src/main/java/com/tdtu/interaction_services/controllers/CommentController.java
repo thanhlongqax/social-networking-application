@@ -4,7 +4,10 @@ package com.tdtu.interaction_services.controllers;
 import com.tdtu.interaction_services.dtos.ResDTO;
 import com.tdtu.interaction_services.dtos.request.AddCommentRequest;
 import com.tdtu.interaction_services.dtos.request.UpdateCommentRequest;
+import com.tdtu.interaction_services.services.CommentService;
 import com.tdtu.interaction_services.services.Impl.CommentsServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
+@Tag(name = "Comment Service", description = "API For Upload File")
 public class CommentController {
-    private final CommentsServiceImpl commentsServiceImpl;
+    private final CommentService commentsServiceImpl;
 
+    @Operation(summary = "add comment", description = "Returns a list of users")
     @PostMapping
     public ResponseEntity<?> addComment(@RequestHeader("Authorization") String token,
                                         @RequestBody AddCommentRequest comment) {

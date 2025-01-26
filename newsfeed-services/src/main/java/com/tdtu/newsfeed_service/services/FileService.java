@@ -34,7 +34,7 @@ public class FileService {
     private final RestTemplate restTemplate;
 
     public String upload(MultipartFile file, EFileType type) throws Exception {
-        String url = host + "/api/v1/file/upload/" + type.getType();
+        String url = host + "/api/file/upload/" + type.getType();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);

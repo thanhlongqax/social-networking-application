@@ -11,6 +11,7 @@ import com.tdtu.user_services.mapper.request.SaveUserReqMapper;
 import com.tdtu.user_services.mapper.respone.MinimizedUserMapper;
 import com.tdtu.user_services.model.User;
 import com.tdtu.user_services.repository.UserRepository;
+import com.tdtu.user_services.service.IUserService;
 import com.tdtu.user_services.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final SaveUserReqMapper saveUserReqMapper;
     private final FileService fileService;
@@ -53,6 +54,13 @@ public class UserService {
 
         return response;
     }
+    public ResDTO<?> findByUserName(String username){
+        ResDTO<User> response = new ResDTO<>();
+        response.setCode(HttpServletResponse.SC_OK);
+        response.setMessage("users fetched successfully");
+        response.setData(userRepository.findByUsernameAndActive(username, true).orElse(null));
+        return response;
+    }
 
     public ResDTO<?> findByEmailResp(String email){
         User foundUser = findByEmail(email);
@@ -66,6 +74,7 @@ public class UserService {
                     .password(foundUser.getHashPassword())
                     .email(foundUser.getEmail())
                     .active(foundUser.isActive())
+                    .username(foundUser.getUsername())
                     .userFullName(foundUser.getUserFullName())
                     .role(foundUser.getRole() == null ? EUserRole.ROLE_USER : foundUser.getRole())
                     .build());
@@ -148,7 +157,7 @@ public class UserService {
         }else{
             response.setData(null);
             response.setCode(HttpServletResponse.SC_BAD_REQUEST);
-            response.setMessage("Email này đã tồn tại!");
+            response.setMessage("Email này đã tồn tại!123");
         }
 
         return response;

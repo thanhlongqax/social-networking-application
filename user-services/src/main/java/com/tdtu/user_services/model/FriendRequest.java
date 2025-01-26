@@ -1,7 +1,7 @@
 package com.tdtu.user_services.model;
 
 
-import com.tdtu.user_services.enums.EFriendshipStatus;
+import com.tdtu.user_services.enums.EFriendReqStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class FriendRequest {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Enumerated(EnumType.STRING)
-    private EFriendshipStatus status;
+    private EFriendReqStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean active;

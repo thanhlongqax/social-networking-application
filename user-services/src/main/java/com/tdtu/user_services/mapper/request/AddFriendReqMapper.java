@@ -1,7 +1,7 @@
 package com.tdtu.user_services.mapper.request;
 
 import com.tdtu.user_services.dto.request.FriendReqDTO;
-import com.tdtu.user_services.enums.EFriendshipStatus;
+import com.tdtu.user_services.enums.EFriendReqStatus;
 import com.tdtu.user_services.model.FriendRequest;
 import com.tdtu.user_services.service.Impl.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class AddFriendReqMapper {
         friendRequest.setActive(true);
         friendRequest.setCreatedAt(LocalDateTime.now());
         friendRequest.setUpdatedAt(LocalDateTime.now());
-        friendRequest.setStatus(EFriendshipStatus.PENDING);
+        friendRequest.setStatus(EFriendReqStatus.PENDING);
         friendRequest.setFromUser(userService.findById(fromUserId));
         friendRequest.setToUser(userService.findById(dto.getToUserId()));
 

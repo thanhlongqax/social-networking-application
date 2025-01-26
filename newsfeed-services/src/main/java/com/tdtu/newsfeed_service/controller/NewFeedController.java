@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/newFeed")
+@RequestMapping("/api/posts")
 public class NewFeedController {
     private final PostService postService;
 
@@ -26,7 +26,7 @@ public class NewFeedController {
             @RequestHeader(name = "Authorization") String token,
             @RequestParam("page") int page,
             @RequestParam("size") int size,
-            @RequestParam("startTime") String startTime
+            @RequestParam(name = "startTime", required = false) String startTime
     ){
         ResDTO<?> response = postService.getNewsFeed(token, page, size, startTime);
         return ResponseEntity.status(response.getCode()).body(response);
@@ -93,7 +93,7 @@ public class NewFeedController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    @GetMapping()
+    @GetMapping("/get-my-posts")
     public ResponseEntity<?> getMyPost(@RequestHeader("Authorization") String token){
         ResDTO<?> response = postService.findMyPosts(token);
         return ResponseEntity.status(response.getCode()).body(response);

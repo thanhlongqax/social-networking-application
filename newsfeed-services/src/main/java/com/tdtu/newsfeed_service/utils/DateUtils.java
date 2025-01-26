@@ -20,7 +20,10 @@ public class DateUtils {
 
         return Date.from(zonedDateTimeVn.toInstant());
     }
-
+    public static String localDateTimeToString(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return localDateTime.format(formatter);
+    }
     public static LocalDateTime stringToLocalDate(String stringDate){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 

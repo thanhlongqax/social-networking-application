@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -99,6 +100,11 @@ public class PostService {
         FetchNewsFeedReq req = new FetchNewsFeedReq();
         req.setPage(page);
         req.setSize(size);
+        if (startTime == null ) {
+            LocalDateTime  start = LocalDateTime.now().minusDays(1);
+            startTime = DateUtils.localDateTimeToString(start);
+
+        }
         req.setStartTime(DateUtils.stringToLocalDate(startTime));
 
         int startIndex = (req.getPage() - 1) * req.getSize();
@@ -154,7 +160,7 @@ public class PostService {
 
         Map<String, Object> data = new HashMap<>();
 
-        data.put("totalPages", combinedPosts.size() / req.getSize());
+        data.put("totalPages", (int) Math.ceil((double) combinedPosts.size() / req.getSize()));
         data.put("posts", combinedPosts.stream().skip(startIndex)
                 .limit(req.getSize()).toList());
 
@@ -198,23 +204,31 @@ public class PostService {
             }
         });
 
-        List<User> taggedUser = userService
-                .findByIds(postRequest.getPostTags()
-                        .stream()
-                        .map(PostTagReqDTO::getTaggedUserId)
-                        .toList()
-                );
+        List<PostTagReqDTO> postTags = postRequest.getPostTags() != null
+                ? postRequest.getPostTags()
+                : new ArrayList<>(); // Danh sách mặc định nếu null
+
+        List<String> userIds = postTags.stream()
+                .map(PostTagReqDTO::getTaggedUserId)
+                .filter(Objects::nonNull) // Loại bỏ ID null
+                .toList();
+
+        List<User> taggedUser = userService.findByIds(userIds);
+
+        if (taggedUser == null) {
+            taggedUser = new ArrayList<>(); // Đảm bảo danh sách không null
+        }
 
         post.setPostTags(
-                taggedUser.stream().map(
-                        user -> {
+                taggedUser.stream()
+                        .map(user -> {
                             PostTag postTag = new PostTag();
                             postTag.setId(UUID.randomUUID().toString());
                             postTag.setCreatedAt(LocalDateTime.now());
                             postTag.setTaggedUser(user);
                             return postTag;
-                        }
-                ).toList()
+                        })
+                        .toList()
         );
 
         post.setUserId(jwtUtils.getUserIdFromJwtToken(token));
