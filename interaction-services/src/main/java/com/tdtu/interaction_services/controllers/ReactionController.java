@@ -23,10 +23,17 @@ public class ReactionController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    @GetMapping()
-    public ResponseEntity<?> findByPost(@RequestHeader(name = "Authorization", required = false, defaultValue = "") String token,
+    @GetMapping("/numOfReactions")
+    public ResponseEntity<?> findByPostForNumOfReaction(@RequestHeader(name = "Authorization", required = false, defaultValue = "") String token,
                                         @RequestParam("postId") String postId){
         ResDTO<?> response = reactionServiceImpl.getReactsByPostId(token, postId);
         return ResponseEntity.status(response.getCode()).body(response);
     }
+    @GetMapping()
+    public ResponseEntity<?> findByPost(@RequestHeader(name = "Authorization", required = false, defaultValue = "") String token,
+                                        @RequestParam("postId") String postId){
+        ResDTO<?> response = reactionServiceImpl.getReactsByPostIdForPostService(token, postId);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+
 }

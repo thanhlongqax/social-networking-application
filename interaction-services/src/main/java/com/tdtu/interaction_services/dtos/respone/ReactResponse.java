@@ -4,6 +4,7 @@ package com.tdtu.interaction_services.dtos.respone;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tdtu.interaction_services.enums.EReactionType;
 import com.tdtu.interaction_services.models.User;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

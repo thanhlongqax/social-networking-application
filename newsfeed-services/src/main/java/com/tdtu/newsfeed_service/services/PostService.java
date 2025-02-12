@@ -118,13 +118,14 @@ public class PostService {
 
         String userId = jwtUtils.getUserIdFromJwtToken(token);
 
-        List<PostResponse> posts = customPostRepository.findNewsFeed(userId, friendIds, req.getStartTime())
+        List<PostResponse> posts = customPostRepository.findNewsFeed(userId, friendIds, req.getStartTime() )
                 .stream().map(
                         post -> {
                             PostResponse postResponse = postResponseMapper.mapToDto(token, post);
                             postResponse.setMine(post.getUserId().equals(userId));
                             return postResponse;
                         }
+
                 ).toList();
 
         //Todo: Find shared posts then combine all of them with pagination
