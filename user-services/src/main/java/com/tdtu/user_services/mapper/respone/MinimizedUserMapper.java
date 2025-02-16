@@ -13,6 +13,7 @@ public class MinimizedUserMapper {
 
             minimizedUser.setId(user.getId());
             minimizedUser.setUserFullName(user.getUserFullName());
+            minimizedUser.setUsername(user.getUsername());
             minimizedUser.setEmail(user.getEmail());
             minimizedUser.setCreatedAt(user.getCreatedAt());
             minimizedUser.setFirstName(user.getFirstName());

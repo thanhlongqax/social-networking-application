@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class FollowerCountResponse {
-    private Long countFollower;
+@NoArgsConstructor
+public class FollowingCountResponse {
+    private Long countFollowing;
     private List<User> user;
 }

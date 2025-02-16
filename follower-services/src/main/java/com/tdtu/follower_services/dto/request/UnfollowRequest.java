@@ -1,5 +1,6 @@
 package com.tdtu.follower_services.dto.request;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UnfollowerRequest {
-    private Long followerId;
-    private Long followingId;
-
+public class UnfollowRequest {
+    private Long userId;
+    @Nullable
+    private Long fromTo;
 }

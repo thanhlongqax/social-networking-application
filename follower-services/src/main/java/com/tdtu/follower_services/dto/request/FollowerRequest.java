@@ -1,5 +1,6 @@
 package com.tdtu.follower_services.dto.request;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FollowerRequest {
-    private String followerId;
-    private String followingId;
+    private String userId;
+    @Nullable
+    private String fromTo;
 
 }

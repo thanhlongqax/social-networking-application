@@ -1,20 +1,21 @@
 package com.tdtu.follower_services.models;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+
 @Data
-@Table(name = "followers")
 @AllArgsConstructor
 @NoArgsConstructor
+@Document
 public class Follower {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String followerId;
-    private String followingId;
-    private Boolean isFollowing = true;
+
+    private String followerUserId; // ID của người theo dõi
+    private String followingUserId; // ID của người được theo dõi
+    private Boolean activeFollow = true; // Trạng thái theo dõi
 }

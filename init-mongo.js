@@ -11,7 +11,9 @@ db = db.getSiblingDB('interaction-service');         // Tạo thêm database
 // db.createCollection('reactions');
 // db.createCollection('comments');
 
-db = db.getSiblingDB('newsfeed-service');         // Tạo thêm database
+db = db.getSiblingDB('newsfeed-service');
+
+db = db.getSiblingDB('follower-service');  // Tạo thêm database
 // db.createCollection('bannedWord');
 // db.createCollection('posts');
 // db.createCollection('PostShare');

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FollowerResponse {
-    private String followerId;
-    private String followingId;
-    private boolean IsFollowing;
+    private String followerUserId; // ID của người theo dõi
+    private String followingUserId; // ID của người được theo dõi
+    private Boolean activeFollow = true; // Trạng thái theo dõi
 
 }

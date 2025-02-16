@@ -24,12 +24,15 @@ public class FollowerController {
         return new ResponseEntity<>(followerService.unFollow(token,request), HttpStatus.OK);
     }
     @GetMapping("/get_following")
-    public ResponseEntity<?> getFollowing(@RequestHeader("Authorization") String token ){
-        return new ResponseEntity<>(followerService.getFollowingCount(token), HttpStatus.OK);
+    public ResponseEntity<?> getFollowing(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(value = "search", required = false) String search){
+        return new ResponseEntity<>(followerService.getFollowingCount(token ,search), HttpStatus.OK);
     }
     @GetMapping("/get_follower")
-    public ResponseEntity<?> getFollower(@RequestHeader("Authorization") String token ){
-        return new ResponseEntity<>(followerService.getFollowerCount(token), HttpStatus.OK);
+    public ResponseEntity<?> getFollower(@RequestHeader("Authorization") String token ,
+                                         @RequestParam(value = "search", required = false) String search){
+        return new ResponseEntity<>(followerService.getFollowerCount(token ,search), HttpStatus.OK);
     }
 
 //    @GetMapping("/{userId}/count")
