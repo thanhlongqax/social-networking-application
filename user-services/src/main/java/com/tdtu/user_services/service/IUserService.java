@@ -15,9 +15,10 @@ public interface IUserService {
     public User findById(String id);
     public ResDTO<?> findByUserName(String username);
     public ResDTO<?> existsById(String id);
-    public ResDTO<?> searchByName(String name);
+    public ResDTO<?> searchByName(String token , String keyword);
     public ResDTO<?> saveUser(SaveUserReqDTO user);
     public ResDTO<?> updateBio(String token, UpdateBioReqDTO userBio);
+    public ResDTO<?> updateProfile(String token, ProfileDTO profileDTO);
     public ResDTO<?> renameUser(String token, RenameReqDTO request);
     public ResDTO<?> updatePicture(String token, MultipartFile pic, boolean isProfilePic);
     public ResDTO<?> updateGender(String token, UpdateGenderReqDTO userGender);

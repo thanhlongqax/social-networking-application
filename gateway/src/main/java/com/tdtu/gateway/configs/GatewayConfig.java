@@ -38,6 +38,12 @@ public class GatewayConfig {
                 .route("file-service", r -> r.path("/api/file/**")
                         .filters(f -> f.filter(filter))
                         .uri("lb://file-service"))
+                .route("search-service", r -> r.path("/api/search/** , ","/api/search-history/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://search-service"))
+                .route("notification-service", r -> r.path("/api/notification/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://notification-service"))
                 .build();
     }
 }

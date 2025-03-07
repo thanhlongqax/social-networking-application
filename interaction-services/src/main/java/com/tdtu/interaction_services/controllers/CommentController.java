@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
-@Tag(name = "Comment Service", description = "API For Upload File")
+@Tag(name = "Interaction Service", description = "API For Interaction")
 public class CommentController {
     private final CommentService commentsServiceImpl;
 

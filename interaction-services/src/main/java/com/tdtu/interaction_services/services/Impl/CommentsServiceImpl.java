@@ -76,6 +76,7 @@ public class CommentsServiceImpl implements CommentService {
                     interactNotification.setPostId(request.getPostId());
                     interactNotification.setTitle("Có người tương tác nè!");
 
+
                     kafkaMsgService.publishInteractNoti(interactNotification);
                 }
 

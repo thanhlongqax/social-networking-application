@@ -4,7 +4,7 @@ db = db.getSiblingDB('notification-service'); // Chọn database
 // db = db.getSiblingDB('user-service');         // Chọn database khác
 // db.createCollection('users');                 // Tạo collection
 
-db = db.getSiblingDB('chat-service');         // Tạo thêm database
+db = db.getSiblingDB('message-service');         // Tạo thêm database
 // db.createCollection('messages');              // Tạo collection
 
 db = db.getSiblingDB('interaction-service');         // Tạo thêm database

@@ -13,4 +13,6 @@
 ### text-categorize-service :8011
 ### recommendation-service : 8012
 ### video-call-service: 8013
+### search-service: 8014
+### friend-recommendation-service: 8014
 

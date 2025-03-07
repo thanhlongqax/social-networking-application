@@ -1,7 +1,5 @@
 package com.tdtu.newsfeed_service.models;
 
-
-
 import com.tdtu.newsfeed_service.enums.EPostType;
 import com.tdtu.newsfeed_service.enums.EPrivacy;
 import lombok.AllArgsConstructor;

@@ -34,7 +34,7 @@ public class UserService implements IUserService {
 
     public User findById(String userId){
         String getUserInfoUrl = UriComponentsBuilder
-                .fromHttpUrl(userServiceHost + "api/v1/users/" + userId)
+                .fromHttpUrl(userServiceHost + "api/users/" + userId)
                 .toUriString();
 
         log.info(getUserInfoUrl);

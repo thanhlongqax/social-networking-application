@@ -11,6 +11,7 @@ import com.tdtu.user_services.mapper.request.SaveUserReqMapper;
 import com.tdtu.user_services.mapper.respone.MinimizedUserMapper;
 import com.tdtu.user_services.model.User;
 import com.tdtu.user_services.repository.UserRepository;
+import com.tdtu.user_services.service.IUserSearchService;
 import com.tdtu.user_services.service.IUserService;
 import com.tdtu.user_services.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class UserService implements IUserService {
     private final JwtUtils jwtUtils;
     private final FirebaseService firebaseService;
     private final MinimizedUserMapper minimizedUserMapper;
-
+    private final IUserSearchService userSearchService;
     public ResDTO<?> findAll(){
         ResDTO<List<User>> response = new ResDTO<>();
         response.setCode(HttpServletResponse.SC_OK);
@@ -61,7 +61,17 @@ public class UserService implements IUserService {
         response.setData(userRepository.findByUsernameAndActive(username, true).orElse(null));
         return response;
     }
-
+//    private void saveUserToElasticSearch(User user) {
+//        UserDocument userDocument = new UserDocument();
+//        userDocument.setId(user.getId());
+//        userDocument.setUsername(user.getUsername());
+//        userDocument.setFirstName(user.getFirstName());
+//        userDocument.setMiddleName(user.getMiddleName());
+//        userDocument.setLastName(user.getLastName());
+//        userDocument.setUserFullName(user.getUserFullName());
+//
+//        userSearchRepository.save(userDocument);
+//    }
     public ResDTO<?> findByEmailResp(String email){
         User foundUser = findByEmail(email);
         ResDTO<AuthUserResponse> response = new ResDTO<>();
@@ -129,12 +139,16 @@ public class UserService implements IUserService {
         return response;
     }
 
-    public ResDTO<?> searchByName(String name){
+    public ResDTO<?> searchByName(String token , String keyword) {
+        jwtUtils.getTokenSubject(token);
         ResDTO<List<MinimizedUserResponse>> response = new ResDTO<>();
 
-        List<MinimizedUserResponse> userResponses = userRepository.findByNamesContaining(name).stream().map(
-                minimizedUserMapper::mapToDTO
-        ).toList();
+        List<MinimizedUserResponse> userResponses = userRepository
+                .searchUsers(keyword) // Tìm trong DB trước
+                .stream()
+                .filter(user -> user.getUserFullName().toLowerCase().contains(keyword.toLowerCase())) // Lọc thêm với userFullName
+                .map(minimizedUserMapper::mapToDTO)
+                .toList();
 
         response.setCode(HttpServletResponse.SC_OK);
         response.setMessage("success");
@@ -146,6 +160,8 @@ public class UserService implements IUserService {
         ResDTO<SaveUserResponse> response = new ResDTO<>();
         if(!userRepository.existsByEmail(user.getEmail())){
             User savedUser = userRepository.save(saveUserReqMapper.mapToObject(user));
+
+            userSearchService.saveUserToElasticSearch(savedUser);
 
             response.setCode(HttpServletResponse.SC_OK);
             response.setMessage("Đăng ký thành công");
@@ -181,7 +197,30 @@ public class UserService implements IUserService {
 
         return response;
     }
+    public ResDTO<?> updateProfile(String token, ProfileDTO profileDTO){
+        String userId = jwtUtils.getUserIdFromJwtToken(token);
+        User user = findById(userId);
+        ResDTO<User> response = new ResDTO<>();
+        if(user != null){
+            user.setFirstName(profileDTO.getFirstName());
+            user.setLastName(profileDTO.getLastName());
+            user.setProfilePicture(profileDTO.getProfilePicture());
+            user.setUsername(profileDTO.getUsername());
+            user.setGender(profileDTO.getGender());
+            user.setBirthday(profileDTO.getBirthday());
+            user.setBio(profileDTO.getBio());
 
+            response.setMessage("Cập nhật thành công!");
+            response.setCode(HttpServletResponse.SC_OK);
+            response.setData(userRepository.save(user));
+        }else{
+            response.setMessage("Không tìm thấy người dùng với id: " + userId);
+            response.setCode(HttpServletResponse.SC_BAD_REQUEST);
+            response.setData(null);
+        }
+
+        return response;
+    }
     public ResDTO<?> renameUser(String token, RenameReqDTO request){
         String userId = jwtUtils.getUserIdFromJwtToken(token);
         User user = findById(userId);

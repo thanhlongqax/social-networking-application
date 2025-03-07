@@ -102,7 +102,7 @@ public class ReactionServiceImpl implements ReactionService {
                     notification.setContent(notification.getUserFullName() + " đã bày tỏ cảm xúc về bài viết của bạn.");
                     notification.setPostId(reaction.getPostId());
                     notification.setTitle("Có người tương tác nè!");
-
+//                    notification.setUserId(foundUser.getId());
                     kafkaMsgService.publishInteractNoti(notification);
                 }
             }

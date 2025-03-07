@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Data
 public class Report {
+    @Id
     private String id;
     private String reason;
     private String userId;

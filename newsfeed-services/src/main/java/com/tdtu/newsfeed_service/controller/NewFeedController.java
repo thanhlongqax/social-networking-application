@@ -6,6 +6,8 @@ import com.tdtu.newsfeed_service.dtos.request.CreatePostRequest;
 import com.tdtu.newsfeed_service.dtos.request.SharePostRequest;
 import com.tdtu.newsfeed_service.dtos.request.UpdatePostContentRequest;
 import com.tdtu.newsfeed_service.services.PostService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
+@Tag(name = "NewFeed Service", description = "API For NewFeed ")
 public class NewFeedController {
     private final PostService postService;
 
@@ -96,6 +99,13 @@ public class NewFeedController {
     @GetMapping("/get-my-posts")
     public ResponseEntity<?> getMyPost(@RequestHeader("Authorization") String token){
         ResDTO<?> response = postService.findMyPosts(token);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+    @GetMapping("/userId/{id}")
+    public ResponseEntity<?> getPostByUserId(@RequestHeader("Authorization") String token,
+                                       @PathVariable("id") String id
+                                       ){
+        ResDTO<?> response = postService.findPostByUserId(token ,id);
         return ResponseEntity.status(response.getCode()).body(response);
     }
 }

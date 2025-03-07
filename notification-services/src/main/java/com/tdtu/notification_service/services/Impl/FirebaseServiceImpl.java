@@ -62,13 +62,14 @@ public class FirebaseServiceImpl implements FireBaseService {
         String SEND_NOTI_URL = "https://fcm.googleapis.com/v1/projects/"+ projectId +"/messages:send";
 
         User foundUser = userServiceImpl.findById(userId);
+
         if (foundUser != null) {
+
             String notificationKey = foundUser.getNotificationKey();
             if(notificationKey == null || notificationKey.isEmpty()){
                 return false;
             }
             String token = getAccessToken();
-
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                 HttpPost httpPost = new HttpPost(SEND_NOTI_URL);
                 httpPost.setHeader("Authorization", "Bearer " + token);

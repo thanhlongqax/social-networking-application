@@ -1,6 +1,28 @@
 version: "3.8"
 services:
-  postgresdb:
+  friend-recommendation-pyspark-service:
+    build:
+      context: ./friend-recommendation-pyspark-services
+    container_name: friend-recommendation-pyspark-service
+    ports:
+      - "5001:5001"
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - FLASK_APP=friend_recommendation_pyspark_service.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_RUN_PORT=5001
+    depends_on:
+      - broker
+  search-service:
+    image: 'postgres'
+    container_name: search-service
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=search-service
+  user-service:
     image: 'postgres'
     container_name: my-postgres-container-new
     ports:
@@ -81,10 +103,42 @@ services:
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=12345678 # Đặt mật khẩu cho user 'elastic'
+      - xpack.security.enabled=true  # Bật bảo mật
+      - xpack.security.authc.api_key.enabled=true
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - elastic_network
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.5.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_user
+      - ELASTICSEARCH_PASSWORD="12345678"
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic_network
 volumes:
   data: {}
   redis_data: {}
+  elasticsearch_data:
+    driver: local
 
 networks:
   default:
     name: mongodb_network
+  elastic_network:
+    driver: bridge

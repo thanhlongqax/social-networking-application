@@ -1,7 +1,5 @@
 package com.tdtu.notification_service.models;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,11 +17,11 @@ import java.util.Date;
 public class InteractNotification {
     @Id
     @Indexed
-    @JsonIgnore
     private String id;
     private String userFullName;
     private String avatarUrl;
     private String content;
     private String title;
     private String postId;
+    private String userId;
 }

@@ -40,7 +40,9 @@
 		<module>interaction-services</module>
 		<module>newsfeed-services</module>
 		<module>notification-services</module>
+		<module>search-services</module>
 		<module>recommendation-services</module>
+		<module>friend-recommendation-services</module>
 		<module>text-categorize-services</module>
 		<module>user-services</module>
 		<module>video-call-services</module>

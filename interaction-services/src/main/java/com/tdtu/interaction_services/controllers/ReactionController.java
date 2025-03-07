@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/reacts")
 @RequiredArgsConstructor
-@Tag(name = "Reaction Service", description = "API For Upload File")
+@Tag(name = "Interaction Service", description = "API For Interaction")
 public class ReactionController {
     private final ReactionServiceImpl reactionServiceImpl;
 

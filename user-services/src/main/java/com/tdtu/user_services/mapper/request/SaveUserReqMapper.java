@@ -5,7 +5,6 @@ import com.tdtu.user_services.enums.EUserRole;
 import com.tdtu.user_services.model.User;
 import com.tdtu.user_services.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 

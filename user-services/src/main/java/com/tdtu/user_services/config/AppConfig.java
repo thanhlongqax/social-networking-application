@@ -2,7 +2,6 @@ package com.tdtu.user_services.config;
 
 
 import org.apache.kafka.clients.admin.NewTopic;
-import org.checkerframework.checker.units.qual.N;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

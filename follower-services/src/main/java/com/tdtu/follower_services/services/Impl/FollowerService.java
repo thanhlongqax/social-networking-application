@@ -87,7 +87,7 @@ public class FollowerService implements IFollowerService {
                     followerResponse.setFollowerUserId(follower.getFollowerUserId());
                     followerResponse.setActiveFollow(follower.getActiveFollow());
 
-                    followerEventProducer.sendFollowEvent(followerResponse);
+//                    followerEventProducer.sendFollowEvent(followerResponse);
                 }
                 respone.setCode(HttpStatus.OK.hashCode());
                 respone.setMessage("Follow success");
@@ -120,7 +120,7 @@ public class FollowerService implements IFollowerService {
                 followerResponse.setFollowingUserId(isFollowExist.getFollowingUserId());
                 followerResponse.setActiveFollow(isFollowExist.getActiveFollow());
 
-                followerEventProducer.sendUnfollowEvent(followerResponse);
+//                followerEventProducer.sendUnfollowEvent(followerResponse);
 
                 baseResponse.setCode(HttpStatus.OK.hashCode());
                 baseResponse.setMessage("Unfollow thành công");
@@ -133,19 +133,20 @@ public class FollowerService implements IFollowerService {
         }
         return baseResponse;
     }
-    public ResDTO<?> getFollowerCount(String token , String search) {
-        String userId  = jwtUtils.getUserIdFromJwtToken(token);
-        Long countFollowers =  followerRepository.countByFollowingUserIdAndActiveFollow(userId , true);
+    public ResDTO<?> getFollowerCount(String token ,String id, String search) {
+        jwtUtils.getTokenSubject(token);
+        log.info("idUser id :{}",id);
+        Long countFollowers =  followerRepository.countByFollowingUserIdAndActiveFollow(id , true);
 
-        List<User> userByFollowingId = userService.findByIds(
-                followerRepository.findByFollowingUserIdAndActiveFollowTrue(userId)
+        List<User> userByFollowerId = userService.findByIds(
+                followerRepository.findByFollowingUserIdAndActiveFollowTrue(id)
                         .stream()
-                        .map(Follower::getFollowingUserId)
+                        .map(Follower::getFollowerUserId)
                         .toList()
         );
         if (search != null && !search.isEmpty()) {
             String lowerSearch = search.toLowerCase();
-            userByFollowingId = userByFollowingId.stream()
+            userByFollowerId = userByFollowerId.stream()
                     .filter(user ->
                             user.getUserFullName().toLowerCase().contains(lowerSearch) ||
                                     user.getUsername().toLowerCase().contains(lowerSearch) ||
@@ -157,7 +158,7 @@ public class FollowerService implements IFollowerService {
 
         FollowerCountResponse respone = new FollowerCountResponse();
         respone.setCountFollower(countFollowers);
-        respone.setUser(userByFollowingId);
+        respone.setUser(userByFollowerId);
 
         ResDTO<FollowerCountResponse> baseRespone = new ResDTO<>();
         baseRespone.setCode(HttpStatus.OK.value());
@@ -167,12 +168,14 @@ public class FollowerService implements IFollowerService {
         return baseRespone;
     }
 
-    public ResDTO<?> getFollowingCount(String token , String search) {
-        String userId = jwtUtils.getUserIdFromJwtToken(token);
-        Long countFollowing =  followerRepository.countByFollowerUserIdAndActiveFollow(userId , true);
+    public ResDTO<?> getFollowingCount(String token ,String id, String search) {
+        log.info("Token nhận được: {}", token);
+
+        jwtUtils.getTokenSubject(token);
+        Long countFollowing =  followerRepository.countByFollowerUserIdAndActiveFollow(id , true);
 
         List<User> userByFollowingId = userService.findByIds(
-                followerRepository.findByFollowerUserIdAndActiveFollowTrue(userId)
+                followerRepository.findByFollowerUserIdAndActiveFollowTrue(id)
                         .stream()
                         .map(Follower::getFollowingUserId)
                         .toList()
@@ -199,6 +202,35 @@ public class FollowerService implements IFollowerService {
         baseRespone.setData(respone);
         return baseRespone;
     }
+    public ResDTO<?> findFollowedUserIdsByToken(String token) {
+        String userId = jwtUtils.getUserIdFromJwtToken(token);
+        List<String> followedIds =  followerRepository.findByFollowerUserIdAndActiveFollowTrue(userId)
+                .stream()
+                .map(Follower::getFollowingUserId)
+                .toList();
+        ResDTO<List<String>> baseRespone = new ResDTO<>();
+        baseRespone.setMessage("Lấy danh sách followed ids thành công");
+        baseRespone.setData(followedIds);
+        return baseRespone;
 
+    }
+    public ResDTO<Boolean> isFollowing(String token, String targetUserId) {
+        String userId = jwtUtils.getUserIdFromJwtToken(token);
+        ResDTO<Boolean> response = new ResDTO<>();
+
+        if (userId.equals(targetUserId)) {
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage("Bạn không thể follow chính mình.");
+            response.setData(false);
+            return response;
+        }
+
+        boolean isFollowing = followerRepository.existsByFollowerUserIdAndFollowingUserIdAndActiveFollowTrue(userId, targetUserId);
+
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage("Kiểm tra follow thành công.");
+        response.setData(isFollowing);
+        return response;
+    }
 
 }

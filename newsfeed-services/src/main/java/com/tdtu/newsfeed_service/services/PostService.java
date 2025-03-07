@@ -5,6 +5,7 @@ package com.tdtu.newsfeed_service.services;
 import com.tdtu.newsfeed_service.dtos.ResDTO;
 import com.tdtu.newsfeed_service.dtos.request.*;
 import com.tdtu.newsfeed_service.dtos.respone.InteractNotification;
+import com.tdtu.newsfeed_service.dtos.respone.PostByUserIdResponseDTO;
 import com.tdtu.newsfeed_service.dtos.respone.PostResponse;
 import com.tdtu.newsfeed_service.dtos.respone.ShareInfo;
 import com.tdtu.newsfeed_service.enums.EFileType;
@@ -50,6 +51,7 @@ public class PostService {
     private final BannedWordRepository bannedWordRepository;
     private final SendKafkaMsgService kafkaMsgService;
     private final ModerationService moderationService;
+    private final FollowerService followerService;
 
     public Post findPostById(String postId){
         return postRepository.findById(postId).orElse(null);
@@ -115,10 +117,21 @@ public class PostService {
                 .stream()
                 .map(User::getId)
                 .toList();
+        List<String> followedUserIds = followerService.findFollowedUserIdsByToken(token).stream().toList();
+        log.info("Fetched followedIds: {} " , followedUserIds);
+
+        // Hợp nhất friendIds và followedUserIds
+        Set<String> combinedUserIds = new HashSet<>();
+        combinedUserIds.addAll(friendIds);
+        combinedUserIds.addAll(followedUserIds);
+        List<String> userIdsList = new ArrayList<>(combinedUserIds);
+        log.info("đây là idUsers: {}",userIdsList.stream());
+
+
 
         String userId = jwtUtils.getUserIdFromJwtToken(token);
 
-        List<PostResponse> posts = customPostRepository.findNewsFeed(userId, friendIds, req.getStartTime() )
+        List<PostResponse> posts = customPostRepository.findNewsFeed(userId, userIdsList, req.getStartTime() )
                 .stream().map(
                         post -> {
                             PostResponse postResponse = postResponseMapper.mapToDto(token, post);
@@ -130,7 +143,7 @@ public class PostService {
 
         //Todo: Find shared posts then combine all of them with pagination
 
-        List<PostResponse> sharedPosts = postShareService.findSharedPostByFriendIds(friendIds, userId, req.getStartTime())
+        List<PostResponse> sharedPosts = postShareService.findSharedPostByFriendIds(friendIds , userId, req.getStartTime())
                 .stream().map(
                         postShare -> {
                             Post foundPost = findPostById(postShare.getSharedPostId());
@@ -455,6 +468,31 @@ public class PostService {
                             throw new RuntimeException("post not found with id: " + request.getPostId());
                         }
                 );
+
+        return response;
+    }
+
+    public ResDTO<?> findPostByUserId(String token , String id){
+        jwtUtils.getTokenSubject(token);
+        List<Post> posts = postRepository.findByUserIdOrPostTagsTaggedUserId(id, id);
+
+        List<PostResponse> myPosts = posts.stream().map(post -> {
+            PostResponse postResponse = postResponseMapper.mapToDto(token, post);
+            postResponse.setMine(post.getUserId().equals(id));
+
+            return postResponse;
+
+        }).toList();
+        int countPost = myPosts.size();
+        PostByUserIdResponseDTO postByUserIdResponseDTO = new PostByUserIdResponseDTO();
+        postByUserIdResponseDTO.setPosts(myPosts);
+        postByUserIdResponseDTO.setCountPost(countPost);
+
+        ResDTO<PostByUserIdResponseDTO> response = new ResDTO<>();
+        response.setData(postByUserIdResponseDTO);
+
+        response.setMessage("success");
+        response.setCode(HttpServletResponse.SC_OK);
 
         return response;
     }

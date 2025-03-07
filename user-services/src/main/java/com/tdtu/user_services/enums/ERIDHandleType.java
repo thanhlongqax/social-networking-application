@@ -1,9 +1,7 @@
 package com.tdtu.user_services.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 @AllArgsConstructor
 @Getter

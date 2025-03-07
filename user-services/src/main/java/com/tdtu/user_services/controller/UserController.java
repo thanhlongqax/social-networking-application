@@ -1,6 +1,7 @@
 package com.tdtu.user_services.controller;
 
 import com.tdtu.user_services.dto.ResDTO;
+
 import com.tdtu.user_services.dto.request.*;
 import com.tdtu.user_services.service.IFriendRequestService;
 import com.tdtu.user_services.service.IUserFavouriteService;
@@ -8,8 +9,6 @@ import com.tdtu.user_services.service.IUserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "User Service", description = "API For Upload File")
+@Tag(name = "User Service", description = "API For User")
 public class UserController {
 
     private final IUserService userService;
@@ -72,12 +71,6 @@ public class UserController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam("key") String key){
-        ResDTO<?> response = userService.searchByName(key);
-        return ResponseEntity.status(response.getCode()).body(response);
-    }
-
     @PostMapping("/bio/update")
     public ResponseEntity<?> updateBio(@RequestHeader("Authorization") String token, @RequestBody UpdateBioReqDTO request){
         ResDTO<?> response = userService.updateBio(token, request);
@@ -96,9 +89,15 @@ public class UserController {
         return ResponseEntity.status(response.getCode()).body(response);
     }
 
-    @PostMapping("/profile/update")
+    @PostMapping("/profilePicture/update")
     public ResponseEntity<?> updateProfilePic(@RequestHeader("Authorization") String token, @RequestParam("file") MultipartFile file){
         ResDTO<?> response = userService.updatePicture(token, file, true);
+        return ResponseEntity.status(response.getCode()).body(response);
+    }
+    @PostMapping("/profile/update")
+    public ResponseEntity<?> updateProfile(@RequestHeader("Authorization") String token,
+                                           @RequestBody ProfileDTO profileDTO){
+        ResDTO<?> response = userService.updateProfile(token, profileDTO);
         return ResponseEntity.status(response.getCode()).body(response);
     }
 

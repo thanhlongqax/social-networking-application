@@ -23,7 +23,9 @@ public class KafkaEventListener {
     @KafkaListener(groupId = "InteractNotification", topics = "interact-noti")
     public void consumeInteractTopic(InteractNotification notification){
         log.info("Interaction message: " + notification.toString());
+
         String userId = postServiceImpl.getUserIdByPostId(notification.getPostId());
+        notification.setUserId(userId);
         boolean sendResult = firebaseServiceImpl.sendInteractNotification(userId, notification);
         if (sendResult)
             log.info("Message sent to target user");

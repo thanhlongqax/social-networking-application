@@ -24,6 +24,8 @@ public interface FollowerRepository extends MongoRepository<Follower, String> {
 
     // Lấy danh sách user mà userId đang theo dõi (chỉ lấy những người vẫn follow)
     List<Follower> findByFollowerUserIdAndActiveFollowTrue(String userId);
+    boolean existsByFollowerUserIdAndFollowingUserIdAndActiveFollowTrue(String followerUserId, String followingUserId);
+
 
 
 }
