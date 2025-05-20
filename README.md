@@ -68,7 +68,7 @@ cd social-networking-application
 * Docker & Docker Compose (for Kafka, Elasticsearch, etc.)
 * Maven
 * Cloudinary account (for image/video storage)
-* Redis (optional for caching, tokens, etc.)
+* Redis (optional for caching.)
 
 ### 3. Run Core Services
 
@@ -97,9 +97,7 @@ mvn spring-boot:run
 
 Kafka is used for:
 
-* **Notification Service** (new followers, likes, comments, etc.)
-* **Activity Logs**
-* **Real-time Feed Generation**
+* **Notification Service** (new followers, likes, comments.)
 
 ---
 
@@ -122,7 +120,6 @@ The **Message Service** uses `Socket.IO` for real-time chat between users.
 
 * Supports private chats
 * Supports typing indicators and message status
-* Optimized with Redis Pub/Sub (optional)
 
 ---
 
@@ -132,15 +129,14 @@ The **Message Service** uses `Socket.IO` for real-time chat between users.
 
 * User profiles
 * Posts
-* Hashtags and mentions
 
 ---
 
 ## 🧠 Friend & Content Recommendations
-
-* **Text Categorization Service**: Classifies post content by topic
-* **Recommendation Service**: Suggests content based on user interaction
-* **Friend Recommendation Service**: Based on mutual friends, interests, and interactions
+Using content-based and collaborative filtering pyspark
+* **Text Categorization Service**: Classifies post content by topic(unexecuted) 
+* **Recommendation Service**: Suggests content based on user interaction (not yet completed)
+* **Friend Recommendation Service**: Based on mutual friends, interests, and interactions (not yet completed)
 
 ---
 
@@ -191,7 +187,6 @@ For questions or feedback, please contact:
 
 * Developer: \[Thanh Long]
 * Email: \[[thanhklongndp@gmail.com])]
-* LinkedIn: \[[https://linkedin.com/in/yourprofile](https://linkedin.com/in/yourprofile)]
 
 ---
 
